@@ -1,0 +1,20 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.admin-content {
+  flex: 1;
+  padding: var(--spacing-unit);
+}
+
+.admin-header {
+  margin-bottom: calc(var(--spacing-unit) * 2);
+}
+
+.admin-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-unit);
+}
+
