@@ -1,0 +1,40 @@
+cd "C:\Users\erenz\Desktop\projects\realtimeboard\backend"
+pip freeze > requirements.txt
+cd core
+docker build
+docker build -t docker-image .
+RUN pip install --upgrade pip
+cd ..
+docker build -t docker-image .
+cd core
+docker build -t docker-image .
+docker 
+docker images
+docker run -d --name docker-container -p 8000:8000 docker-image
+docker ps
+docker-compose down
+docker-compose build
+cd ..
+docker-compose down
+docker run -d --name docker-container -p 8000:8000 docker-image
+docker stop docker-container
+docker rm docker-container
+docker-compose up -d --build
+docker run -d --name realtime-backend -p 8000:8000 backend-backend
+docker ps
+docker stop backend-backend
+docker stop realtime-backend
+docker rm realtime-backend
+docker run -d --name realtime-backend -v .:/app -p 8000:8000 backend-backend
+docker stop realtime-backend
+docker rm realtime-backend
+docker system prune
+docker compose up -d --build
+stop postgres
+docker compose up -d --build
+docker exec -it django_backend python manage.py migrate
+docker-compose down -v
+docker-compose up -d --build
+dosket /history
+doskey /history
+doskey /history > komutlar.txt

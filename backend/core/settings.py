@@ -6,34 +6,37 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-dev-key-change-this-in-production'
 DEBUG = True
+
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "0.0.0.0"]
 
-# --- UYGULAMALAR (SIRALAMA KRİTİKTİR) ---
+# ======================
+# APPLICATIONS
+# ======================
+
 INSTALLED_APPS = [
-    'daphne', # En üstte kalmalı (WebSocket için)
-    
-    # 1. ÖNCE SENİN AUTH UYGULAMAN (Hatanın çözümü burası!)
-    'apps.authentication', 
-    
-    # 2. DJANGO ÇEKİRDEK UYGULAMALARI
+    'daphne',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    # 3. ÜÇÜNCÜ PARTİ PAKETLER
+
+    # third-party
     'rest_framework',
     'corsheaders',
     'channels',
     'rest_framework_simplejwt',
 
-    # 4. DİĞER PROJE UYGULAMALARI
-    'apps.projects',
+    # local apps
+    'apps.users',
 ]
 
-# Middleware
+# ======================
+# MIDDLEWARE
+# ======================
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -45,12 +48,23 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# ======================
+# URL / ASGI / WSGI
+# ======================
+
 ROOT_URLCONF = 'core.urls'
+
+WSGI_APPLICATION = 'core.wsgi.application'
+ASGI_APPLICATION = 'core.asgi.application'
+
+# ======================
+# TEMPLATES
+# ======================
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,43 +77,53 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'core.wsgi.application'
-ASGI_APPLICATION = 'core.asgi.application'
+# ======================
+# DATABASE (DOCKER + LOCAL UYUMLU)
+# ======================
 
-# Veritabanı (Docker Ayarlarıyla Tam Uyumlu)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'realtimeboard',
-        'USER': 'postgres',
-        'PASSWORD': 'root123',
-        'HOST': 'localhost', 
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME', 'realtimeboard'),
+        'USER': os.getenv('DB_USER', 'postgres'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'root123'),
+        'HOST': os.getenv('DB_HOST', 'db'),  # Docker'da: db
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
-# --- AUTH YAPILANDIRMASI ---
-AUTH_USER_MODEL = 'authentication.User'
+
+
+# ======================
+# REST / JWT
+# ======================
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
-    'ROTATE_REFRESH_TOKENS': False,
-    'ALGORITHM': 'HS256',
-    'AUTH_HEADER_TYPES': ('Bearer',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
-# --- STATİK VE DİĞER AYARLAR ---
+# ======================
+# CORS / STATIC
+# ======================
+
 CORS_ALLOW_ALL_ORIGINS = True
+
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# ======================
+# AUTH
+# ======================
+
+# Eğer custom User modelin VARSA:
+# apps/users/models.py içinde User tanımlı olmalı
+AUTH_USER_MODEL = 'users.User'

@@ -1,0 +1,21 @@
+FROM python:3.11-slim
+
+# Sistem bağımlılıklarını kur (Postgres için gerekli)
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Gereksinimleri kopyala ve kur
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Tüm projeyi kopyala (Artık manage.py burada olduğu için sorun yok)
+COPY . .
+
+EXPOSE 8000
+
+# CMD docker-compose tarafından ezilecek ama burada durması iyidir
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
