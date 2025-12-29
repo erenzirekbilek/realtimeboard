@@ -76,3 +76,4 @@ export const { updateElement, addElement, removeElement, updateCollaborators } =
   boardSlice.actions;
 export default boardSlice.reducer;
 
+

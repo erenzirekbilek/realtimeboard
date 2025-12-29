@@ -13,3 +13,4 @@ export const hasAllPermissions = (role: string, permissions: string[]): boolean 
   return permissions.every((permission) => checkPermission(role, permission));
 };
 
+

@@ -25,3 +25,4 @@ export interface Collaborator {
   cursor?: { x: number; y: number };
 }
 
+

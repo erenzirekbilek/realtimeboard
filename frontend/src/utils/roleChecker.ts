@@ -22,3 +22,4 @@ export const hasRole = (userRole: Role | string, requiredRole: Role | string): b
   return (roleHierarchy[userRole] || 0) >= (roleHierarchy[requiredRole] || 0);
 };
 
+
