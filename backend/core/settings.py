@@ -95,10 +95,11 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME', 'realtimeboard'),
         'USER': os.getenv('DB_USER', 'postgres'),
         'PASSWORD': os.getenv('DB_PASSWORD', 'root123'),
-        'HOST': os.getenv('DB_HOST', 'db'),  # Docker'da: db
+        'HOST': os.getenv('DB_HOST', '127.0.0.1'),  # Lokal host üzerinden Docker DB
         'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
+
 
 
 
