@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-dev-key-change-this-in-production'
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "0.0.0.0"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 # ======================
 # APPLICATIONS
@@ -29,9 +29,17 @@ INSTALLED_APPS = [
     'channels',
     'rest_framework_simplejwt',
 
+
     # local apps
     'apps.users',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 
 # ======================
 # MIDDLEWARE
