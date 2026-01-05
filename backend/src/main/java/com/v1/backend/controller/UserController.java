@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users") // Artık tüm istekler /api/users ile başlar
@@ -31,7 +32,7 @@ public class UserController {
 
     // URL: GET http://localhost:8081/api/users/1
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable("id") Integer id){
+    public ResponseEntity<User> getUser(@PathVariable("id") UUID id){
         User user = userService.getUser(id);
         if (user != null) {
             return ResponseEntity.ok(user);
@@ -48,7 +49,7 @@ public class UserController {
 
     // URL: PUT http://localhost:8081/api/users/1
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") Integer id){
+    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") UUID id){
         user.setId(id); // ID'yi garantiye alıyoruz
         User updated = userService.updateUser(user);
         return ResponseEntity.ok(updated);
@@ -56,7 +57,7 @@ public class UserController {
 
     // URL: DELETE http://localhost:8081/api/users/1
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable("id") Integer id){
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") UUID id){
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }

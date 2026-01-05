@@ -3,6 +3,9 @@ package com.v1.backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Data
 @Entity
 @AllArgsConstructor
@@ -11,8 +14,8 @@ import lombok.*;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id; // int yerine Integer yaptık (Kritik nokta burası)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id; // int yerine Integer yaptık (Kritik nokta burası)
 
     private boolean active;
 
@@ -28,6 +31,14 @@ public class User {
 
     @Column(unique = true)
     private String username;
+
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 
     // --- Helper Methods ---
     public String getPassword() {

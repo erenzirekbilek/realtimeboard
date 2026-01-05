@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -28,7 +29,7 @@ public class UserService {
     }
 
     // Tek bir kullanıcıyı ID ile getir
-    public User getUser(Integer id) {
+    public User getUser(UUID id) {
         return userRepository.findById(id).orElse(null);
     }
 
@@ -51,7 +52,7 @@ public class UserService {
     }
 
     // Kullanıcı sil
-    public void deleteUser(Integer id) {
+    public void deleteUser(UUID id) {
         userRepository.deleteById(id);
     }
 
