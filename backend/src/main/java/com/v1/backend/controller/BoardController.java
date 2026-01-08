@@ -1,7 +1,7 @@
 package com.v1.backend.controller;
 
-import com.v1.backend.model.BoardItem;
-import com.v1.backend.service.BoardItemService;
+import com.v1.backend.model.Board;
+import com.v1.backend.service.BoardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,32 +9,25 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/board-items")
+@RequestMapping("/api/boards") // Postman'de çağırdığın yol burası!
 @CrossOrigin(origins = "*")
-public class BoardItemController {
+public class BoardController {
 
-    private final BoardItemService boardItemService;
+    private final BoardService boardService;
 
-    public BoardItemController(BoardItemService boardItemService) {
-        this.boardItemService = boardItemService;
+    public BoardController(BoardService boardService) {
+        this.boardService = boardService;
     }
 
-    // Tahtaya yeni bir nesne (çizim) ekle
-    @PostMapping("/{boardId}")
-    public ResponseEntity<BoardItem> addItem(@PathVariable UUID boardId, @RequestBody BoardItem item) {
-        return ResponseEntity.ok(boardItemService.addItem(boardId, item));
+    // Yeni tahta oluşturmak için (Önce bunu yapmalısın)
+    @PostMapping("/{ownerId}")
+    public ResponseEntity<Board> createBoard(@PathVariable UUID ownerId, @RequestParam String title) {
+        return ResponseEntity.ok(boardService.createBoard(title, ownerId));
     }
 
-    // Tahtadaki tüm nesneleri getir
-    @GetMapping("/board/{boardId}")
-    public ResponseEntity<List<BoardItem>> getItems(@PathVariable UUID boardId) {
-        return ResponseEntity.ok(boardItemService.getItemsByBoard(boardId));
-    }
-
-    // Bir nesneyi sil (Örn: Silgi aracı kullanıldığında)
-    @DeleteMapping("/{itemId}")
-    public ResponseEntity<Void> deleteItem(@PathVariable UUID itemId) {
-        boardItemService.deleteItem(itemId);
-        return ResponseEntity.noContent().build();
+    // Tüm tahtaları listelemek için
+    @GetMapping
+    public ResponseEntity<List<Board>> getAllBoards() {
+        return ResponseEntity.ok(boardService.getAllBoards());
     }
 }
